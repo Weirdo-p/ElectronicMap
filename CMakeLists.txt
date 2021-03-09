@@ -12,8 +12,6 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 include_directories("/usr/include/eigen3")
 
 AUX_SOURCE_DIRECTORY(src DIR_SRCS)
-# add_executable(obsforecast ${DIR_SRCS})
-# target_link_libraries(obsforecast pthread)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 add_subdirectory(src)

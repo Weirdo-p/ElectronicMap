@@ -1,3 +1,7 @@
+/*---------------------------------------------
+   config.h
+   create on 09 Mar 2021 ZHUOXU WHU
+---------------------------------------------*/
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
@@ -43,6 +47,17 @@ public:
     BLH(DMS B, DMS L, double H);
 };
 
+struct XYZ {                /* ecef coordinates */
+public:
+    double  X_;              /* X coordinate */
+    double  Y_;              /* Y coordinate */
+    double  Z_;              /* Z coordinate */
+
+public:
+    XYZ();
+    XYZ(double x, double y, double z);
+};
+
 struct Ellipsoid {          /* ellipsoid type(default WGS84) */
 public:
     double a_;              /* major semi axis */
@@ -58,14 +73,15 @@ public:
     Ellipsoid(EllipsoidType type);
     Ellipsoid(double a, double b);
 
-private:
+public:
     /**********************************
      * set ellipsoid params
      * @param   type    ellipsoid type
      * @return  true if success
     **********************************/
     bool SetEllipsoidParam(EllipsoidType type);
-
+    
+private:
     /**********************************
      * calculate ellipsoid params
      * @param   a   major semi axis

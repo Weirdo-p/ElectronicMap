@@ -20,6 +20,14 @@ BLH::BLH() {
     B_Rad_ = L_Rad_ = H_ = 0;
 }
 
+XYZ::XYZ() {
+    X_ = Y_ = Z_ = 0;
+}
+
+XYZ::XYZ(double x, double y, double z) {
+    X_ = x; Y_ = y; Z_ = z;
+}
+
 BLH::BLH(DMS B, DMS L, double H) {
     double B_deg, L_deg;
     B_Dms_ = B; L_Dms_ = L; H_ = H;

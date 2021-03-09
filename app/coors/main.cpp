@@ -1,10 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include "electronicmap/common.h"
+#include "electronicmap/config.h"
 
 using namespace std;
 
-int main() {
+int main(int argv, char** argc) {
     Ellipsoid wgs84(WGS84);
     cout << setprecision(15) << wgs84.a_ << endl <<
             wgs84.b_ << endl <<
@@ -20,4 +21,8 @@ int main() {
     BLH blh(B, L, 0);
     cout << blh.B_Rad_ << endl <<
             blh.L_Rad_ << endl << endl;
+    char* path = "./data/points.txt";
+    DMS central(113, 0, 0);
+    CConfigCoors config(path, central);
+    config.SetCentral(central);
 }
