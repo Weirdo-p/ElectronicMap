@@ -7,6 +7,7 @@
 
 #include "electronicmap/common.h"
 #include <vector>
+using namespace std;
 
 class CConfigCoors {
 public:

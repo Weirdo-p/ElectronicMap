@@ -6,6 +6,25 @@ DMS::DMS() {
 
 DMS::DMS(int deg, int min, double sec) {
     Deg_ = deg; Min_ = min; Sec_ = sec;
+    DMSCheck();
+}
+
+void DMS::DMSCheck() {
+    if (Deg_ < 0 || Min_ < 0 || Sec_ < 0) {
+        Deg_ = -abs(Deg_); Min_ = abs(Min_); Sec_ = abs(Sec_);
+    } else {
+        Deg_ =  abs(Deg_); Min_ = abs(Min_); Sec_ = abs(Sec_);
+    }
+
+    if(Sec_ > 60)
+        Sec_ -= 60; Deg_ += 1;
+    if(Min_ > 60)
+        if (Deg_ >= 0) {
+            Min_ -= 60; Deg_ += 1;
+        }
+        else {
+            Min_ -= 60; Deg_ -= 1;
+        }
 }
 
 Giant::Giant() {
@@ -50,8 +69,7 @@ Ellipsoid::Ellipsoid(EllipsoidType type) {
 }
 
 bool Ellipsoid::SetEllipsoidParam(EllipsoidType type) {
-    switch (type)
-    {
+    switch (type) {
     case WGS84: {
         a_ = 6378137.0;
         b_ = 6356752.3142;
@@ -92,4 +110,18 @@ void DMS2Deg(DMS dms, double &deg) {
 
 void Deg2Rad(double deg, double &rad) {
     rad = (deg * PI) / 180.0;
+}
+
+void Rad2Deg(double rad, double& deg) {
+    deg = rad * 180.0 / PI;
+}
+
+void Rad2DMS(double rad, DMS& dms) {
+    double deg = 0;
+    if (rad < 0) rad += 2 * PI;
+
+    Rad2Deg(rad, deg);
+    dms.Deg_ = int(deg);
+    dms.Min_ = int((deg - dms.Deg_) * 60.0);
+    dms.Sec_ = (deg - dms.Deg_ - dms.Min_ / 60) * 3600.0;
 }

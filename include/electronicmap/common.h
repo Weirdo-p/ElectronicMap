@@ -21,6 +21,8 @@ public:
 public:
     DMS();
     DMS(int deg, int min, double sec);
+private:
+    void DMSCheck();
 };
 
 struct Giant {              /* big number type */
@@ -80,7 +82,7 @@ public:
      * @return  true if success
     **********************************/
     bool SetEllipsoidParam(EllipsoidType type);
-    
+
 private:
     /**********************************
      * calculate ellipsoid params
@@ -106,5 +108,20 @@ void Deg2Rad(double deg, double &rad);
 *****************************************/
 void DMS2Deg(DMS dms, double &deg);
 
+/***********************************
+ * transform radians to degree
+ * @param   rad     [In]    degree
+ * @param   deg     [out]   radians
+ * @return 
+***********************************/
+void Rad2Deg(double rad, double& deg);
+
+/***********************************
+ * transform rad to dms
+ * @param   rad     [in]    radians
+ * @param   dms     [out]   DMS
+ * @return 
+***********************************/
+void Rad2DMS(double rad, DMS& dms);
 
 #endif // _COMMON_H_
