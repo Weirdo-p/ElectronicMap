@@ -3,24 +3,37 @@
 #include "electronicmap/common.h"
 #include "electronicmap/config.h"
 #include "electronicmap/coordinates.h"
+#include "electronicmap/mapproj.h"
 
 using namespace std;
 
 int main(int argv, char** argc) {
+	// BLH->XYZ->BLH test
     char* path = "./data/points.txt";
     DMS central(113, 0, 0);
     CConfigCoors config(path, central);
     config.SetCentral(central);
     CCoors coor(config);
     auto data = coor.BLH2XYZ_Batch();
-    auto data_blh = coor.XYZ2BLH_Batch();
-    auto blh_origin = coor.GetPointsBLH();
 
-    for (auto da : data)
-        cout << da.X_ << "  " << da.Y_ << "  " << da.Z_ << endl << endl;;
+	// Gaussian Projection test
+	GaussProj proj(config);
+	proj.Proj_Batch();
+	auto points = proj.GetPointsPlain();
+	for (auto point : points)
+		cout << setprecision(15) << point.X_ << "   " << point.Y_ << "   " << point.Z_ << endl;
 
-    for(int i = 0; i < data_blh.size(); ++i) 
-        cout << setprecision(15) << data_blh[i].B_Rad_ - blh_origin[i].B_Rad_ << "   " <<
-                data_blh[i].L_Rad_ - blh_origin[i].L_Rad_ << "   " <<
-                data_blh[i].H_ - blh_origin[i].H_ << "   " << endl;
+	auto pts_blh = config.GetPoints();
+	auto pts_blh_back = proj.BackProj_Batch();
+
+	for (int i = 0; i < pts_blh.size(); ++i)
+		pts_blh_back[i].H_ = pts_blh[i].H_;
+	coor.SetPointsBLH(pts_blh_back);
+	auto back = coor.BLH2XYZ_Batch();
+
+	cout << endl << endl;
+	for (int i = 0; i < back.size(); ++i) 
+		cout << back[i].X_ - data[i].X_ << "   " <<
+				back[i].Y_ - data[i].Y_ << "   " <<
+				back[i].Z_ - data[i].Z_ << "   " << endl;
 }

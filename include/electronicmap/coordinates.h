@@ -1,3 +1,8 @@
+/*---------------------------------------------
+   coordinates.h
+   create on 09 Mar 2021 ZHUOXU WHU
+---------------------------------------------*/
+
 #ifndef _COORS_H_
 #define _COORS_H_
 
@@ -6,7 +11,7 @@
 #include <vector>
 using namespace std;
 
-class CCoors {
+class CCoors { // coordinate related
 public:
     CCoors();
     CCoors(CConfigCoors config);
@@ -46,6 +51,10 @@ public: // get function
     vector<BLH> GetPointsBLH();
     vector<XYZ> GetPointsXYZ();
 
+public: // set function
+    void SetEllipsoid(EllipsoidType type);
+    void SetPointsBLH(vector<BLH> points_blh);
+
 private: // helper
     /****************************************************
      * 计算卯酉圈曲率半径
@@ -55,20 +64,6 @@ private: // helper
      * @return  true if success
     ****************************************************/
     bool GetN(const double B, double &N);
-
-    /********************************
-     * latitude validity check
-     * @param   B   [in]    latitude
-     * @return  true if legal
-    ********************************/
-    bool CheckB(DMS B);
-
-    /********************************
-     * longitude validity check
-     * @param   L   [in]    longitude
-     * @return  true if legal
-    ********************************/
-    bool CheckL(DMS L);
 
 private:
     vector<BLH> points_blh_;    // points in geodetic coordinate

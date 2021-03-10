@@ -1,5 +1,5 @@
 /*---------------------------------------------
-   config.h
+   common.h
    create on 09 Mar 2021 ZHUOXU WHU
 ---------------------------------------------*/
 #ifndef _COMMON_H_
@@ -123,5 +123,20 @@ void Rad2Deg(double rad, double& deg);
  * @return 
 ***********************************/
 void Rad2DMS(double rad, DMS& dms);
+
+/********************************
+ * latitude validity check
+ * @param   B   [in]    latitude
+ * @return  true if legal
+********************************/
+bool CheckB(DMS B);
+
+/********************************
+ * longitude validity check
+ * @param   L   [in]    longitude
+ * @return  true if legal
+********************************/
+bool CheckL(DMS L);
+
 
 #endif // _COMMON_H_

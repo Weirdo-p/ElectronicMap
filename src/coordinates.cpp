@@ -9,15 +9,17 @@ CCoors::CCoors(CConfigCoors config) {
 
 vector<XYZ> CCoors::BLH2XYZ_Batch() {
     XYZ xyz;
+    vector<XYZ> result;
     for (auto point : points_blh_) {
         if(!BLH2XYZ(point, xyz)) {
             cout << "warning: error occurred when transforming BLH -> XYZ, " <<
                      "please check your input" << endl;
             break;
         }
-        points_xyz_.push_back(xyz);
+        result.push_back(xyz);
     }
-    return points_xyz_;
+    points_xyz_ = result;
+    return result;
 }
 
 bool CCoors::BLH2XYZ(BLH blh, XYZ& xyz) {
@@ -73,12 +75,13 @@ bool CCoors::XYZ2BLH(XYZ xyz, BLH &blh) {
 }
 vector<BLH> CCoors::XYZ2BLH_Batch() {
     BLH blh;
-    
+    vector<BLH> result;
     for(auto point : points_xyz_) {
         XYZ2BLH(point, blh);
-        points_blh_.push_back(blh);
+        result.push_back(blh);
     }
-    return points_blh_;
+    points_blh_ = result;
+    return result;
 } 
 
 bool CCoors::GetN(double B,double &N) {
@@ -91,21 +94,14 @@ bool CCoors::GetN(double B,double &N) {
     return true;
 }
 
-bool CCoors::CheckL(DMS L) {
-    double L_deg = 0;
-    DMS2Deg(L, L_deg);
-    if(L_deg > 180.0 || L_deg < -180.0) return false;
-
-    return true;
+void CCoors::SetEllipsoid(EllipsoidType type) {
+    elli_.SetEllipsoidParam(type);
 }
 
-bool CCoors::CheckB(DMS B) {
-    double B_deg = 0;
-    DMS2Deg(B, B_deg);
-    if(B_deg > 90.0 || B_deg < -90.0) return false;
-
-    return true;
+void CCoors::SetPointsBLH(vector<BLH> points_blh) {
+    points_blh_ = points_blh;
 }
+
 
 vector<BLH> CCoors::GetPointsBLH() {
     return points_blh_;

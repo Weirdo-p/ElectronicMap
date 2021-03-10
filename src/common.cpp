@@ -56,6 +56,7 @@ BLH::BLH(DMS B, DMS L, double H) {
 
 BLH::BLH(double B, double L, double H) {
     B_Rad_ = B; L_Rad_ = L; H_ = H;
+    Rad2DMS(B_Rad_, B_Dms_); Rad2DMS(L_Rad_, L_Dms_);
 }
 
 Ellipsoid::Ellipsoid() {
@@ -125,3 +126,20 @@ void Rad2DMS(double rad, DMS& dms) {
     dms.Min_ = int((deg - dms.Deg_) * 60.0);
     dms.Sec_ = (deg - dms.Deg_ - dms.Min_ / 60) * 3600.0;
 }
+
+bool CheckL(DMS L) {
+    double L_deg = 0;
+    DMS2Deg(L, L_deg);
+    if(L_deg > 180.0 || L_deg < -180.0) return false;
+
+    return true;
+}
+
+bool CheckB(DMS B) {
+    double B_deg = 0;
+    DMS2Deg(B, B_deg);
+    if(B_deg > 90.0 || B_deg < -90.0) return false;
+
+    return true;
+}
+
