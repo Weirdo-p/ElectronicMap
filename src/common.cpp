@@ -16,8 +16,9 @@ void DMS::DMSCheck() {
         Deg_ =  abs(Deg_); Min_ = abs(Min_); Sec_ = abs(Sec_);
     }
 
-    if(Sec_ > 60)
+    if(Sec_ > 60) {
         Sec_ -= 60; Deg_ += 1;
+    }
     if(Min_ > 60)
         if (Deg_ >= 0) {
             Min_ -= 60; Deg_ += 1;
@@ -74,6 +75,10 @@ bool Ellipsoid::SetEllipsoidParam(EllipsoidType type) {
     case WGS84: {
         a_ = 6378137.0;
         b_ = 6356752.3142;
+        // c_ = 6399593.6258;
+        // alpha_ = 1.0 / 298.257223563;
+        // e2_ = 0.00669437999013;
+        // eprime2_ = 0.00673949674227;
         CalculateParam(a_, b_);
         break;
     }

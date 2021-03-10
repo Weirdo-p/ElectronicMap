@@ -31,26 +31,21 @@ int GaussProj::GetL0(DMS longi) {
 double GaussProj::Geteta(double B) {
     double cosB = cos(B);
     double cosB_sqr = cosB * cosB;
-    double eta = sqrt(elli_.eprime2_ * cosB_sqr);
+    double eta = (elli_.eprime2_ * cosB_sqr);
     return eta;
 }
 
 double* GaussProj::GetCoef() {
     double* coef, a = elli_.a_, e2 = elli_.e2_;
+    double e4 = e2 * e2, e6 = e4 * e2, e8 = e4 * e4;
+    double e10 = e8 * e2;
     coef = new double[5];
-    double m0 = a * (1 - e2);
-    double m2 = 3.0 / 2.0 * e2 * m0;
-    double m4 = 5.0 / 4.0 * e2 * m2;
-    double m6 = 7.0 / 6.0 * e2 * m4;
-    double m8 = 9.0 / 8.0 * e2 * m6;
+    coef[0] = 1.0 + 3.0 / 4.0 * e2 + 45.0 / 64.0 * e4 + 175.0 / 256.0 * e6 + 11025.0 / 16384.0 * e8 + 43659.0 / 65536.0 * e10;
+    coef[1] =       3.0 / 4.0 * e2 + 15.0 / 16.0 * e4 + 525.0 / 512.0 * e6 + 2205.0 / 2048.0 * e8 + 72765.0 / 65536.0 * e10;
+    coef[2] =                        15.0 / 64.0 * e4 + 105.0 / 256.0 * e6 + 2205.0 / 4096.0 * e8 + 10395.0 / 16384.0 * e10;
+    coef[3] =                                            35.0 / 512.0 * e6 + 315.0 / 2048.0 * e8 + 31185.0 / 131072.0 * e10;
+    coef[4] =                                                                315.0 / 16384.0 * e8 + 3645.0 / 65536.0 * e10;
 
-    double a8 = m8 / 128.0;
-    double a6 = m6 / 32.0 + m8 / 16.0;
-    double a4 = m4 / 8.0 + 3.0 / 16.0 * m6 + 7.0 / 32.0 * m8;
-    double a2 = m2 / 2.0 + m4 / 2.0 + 15.0 / 32.0 * m6 + 7.0 / 16.0 * m8;
-    double a0 = m0 + m2 / 2.0 + 3.0 / 8.0 * m4 + 5.0 / 16.0 * m6 + 
-                35.0 / 128.0 * m8;
-    coef[0] = a0; coef[1] = a2; coef[2] = a4; coef[3] = a6; coef[4] = a8;
     return coef;
 }
 
@@ -86,20 +81,22 @@ vector<XYZ> GaussProj::GetPointsPlain() {
 
 double GaussProj::GetBf(double x) {
     double* a = GetCoef();
-    double Bf = x / a[0];
+    double tmp, Bf = x / (a[0] * elli_.a_ * (1.0 - elli_.e2_));
+    tmp = Bf;
     double thres = 1e-9;
     int count = 0;
     while(true) {
         double coe = 0;
         for(int i = 1; i < 5; ++i)
             coe += a[i] / (i * 2) * sin(Bf * i * 2) * pow(-1, i + 1);
-        coe += x;
         double tempB = coe / a[0];
+        tempB += tmp;
         if(abs(tempB - Bf) < thres)
             break;
         Bf = tempB;
         count++;
     }
+    delete[] a;
     return Bf;
 }
 
@@ -117,12 +114,13 @@ double GaussProj::GetM(double B) {
 
 double GaussProj::GetB(double Bf, double y, double tf,
                        double Mf, double Nf, double etaf) {
-    double etaf_sqr = etaf * etaf, tf_sqr = tf * tf;
-    double coe[4];
+    double etaf_sqr = etaf * etaf, tf_sqr = tf * tf, y2 = y * y;
+    double Nf2 = Nf * Nf, Nf4 = Nf2 * Nf2;
+    double coe[4], tmp = -y2 / (2.0 * Mf * Nf) * tf;
     coe[0] = Bf;
-    coe[1] = -tf / (2 * Mf * Nf) * y * y;
-    coe[2] = tf / (24 * Mf * pow(Nf, 3)) * (5 + 3 * pow(tf, 3) + etaf_sqr - 9 * etaf_sqr * tf_sqr);
-    coe[3] = -tf / (720 * Mf * pow(Nf, 5)) * (61 + 90 * tf_sqr + 45 * tf_sqr * tf_sqr) * pow(y, 6);
+    coe[1] = 1 * tmp;
+    coe[2] = -(y2 / (12.0 * Nf2) * (5.0 + etaf_sqr + 3.0 * tf_sqr - 9.0 * etaf_sqr * tf_sqr)) * tmp;
+    coe[3] = tmp * (y2 * y2 / (360.0 * Nf4) * (61.0 + 90.0 * tf_sqr + 45.0 * tf_sqr));
     double B = 0;
     for(int i = 0; i < 4; ++i)
         B += coe[i];
@@ -131,12 +129,11 @@ double GaussProj::GetB(double Bf, double y, double tf,
 
 double GaussProj::GetL(double y, double Bf, double Nf, double tf, double etaf) {
     double etaf_sqr = etaf * etaf, tf_sqr = tf * tf;
-    double cosBf = cos(Bf);
-    double coe[3];
-    coe[0] = 1.0 / (Nf * cosBf) * y;
-    coe[1] = -1.0 / (6 * pow(Nf, 3) * cosBf) * (1 + 2 * tf_sqr + etaf_sqr) * pow(y, 3);
-    coe[2] = 1.0 / (120 * pow(Nf, 5) * cosBf) * (5 + 28 * tf_sqr + 24 * tf_sqr *
-             tf_sqr + 6 * etaf_sqr + 8 * etaf_sqr * tf_sqr) * pow(y, 5);
+    double cosBf = cos(Bf), y2 = y * y, Nf2= Nf * Nf;
+    double coe[3], temp = y / (Nf * cosBf);
+    coe[0] = 1.0 * temp;
+    coe[1] = -y2 / (6.0 * Nf2) * (1.0 + etaf_sqr + 2.0 * tf_sqr) * temp;
+    coe[2] = y2 * y2 / (120.0 * Nf2 * Nf2) * (5.0 + 6.0 * etaf_sqr + 28.0 * tf_sqr + 8.0 * etaf_sqr * tf_sqr + 24.0 * tf_sqr * tf_sqr) * temp;
     double l = 0;
     for(int i = 0; i < 3; ++i)
         l +=coe[i];
@@ -156,6 +153,7 @@ XYZ GaussProj::Proj(BLH blh) {
     double X = a[0] * B;
     for (int i = 1; i < 5; ++i)
         X += a[i] * sin(i * 2.0 * B) / (i * 2.0) * pow(-1, i);
+    X *= (elli_.a_ * (1 - elli_.e2_));
     double x = Getx(B, t, eta, l, N, X);
     double y = Gety(B, t, eta, l, N);
     delete[] a;
