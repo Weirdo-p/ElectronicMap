@@ -1,8 +1,8 @@
-add_library(electronicmap SHARED
+add_library(coors SHARED
         common.cpp
-        config.cpp
+        coorconfig.cpp
         coordinates.cpp
         mapproj.cpp)
 
-target_link_libraries(electronicmap
+target_link_libraries(coors
         ${THIRD_PARTY_LIBS})

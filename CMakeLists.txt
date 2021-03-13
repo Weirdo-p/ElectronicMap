@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 PROJECT(electronicmap)
 
 set(CMAKE_BUILD_TYPE Debug)
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 ############# dependencies #################

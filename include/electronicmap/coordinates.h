@@ -6,8 +6,8 @@
 #ifndef _COORS_H_
 #define _COORS_H_
 
-#include "electronicmap/common.h"
-#include "electronicmap/config.h"
+#include "electronicmap/coorcommon.h"
+#include "electronicmap/coorconfig.h"
 #include <vector>
 using namespace std;
 

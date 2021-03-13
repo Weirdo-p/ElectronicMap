@@ -5,8 +5,8 @@
 #ifndef _MAPPROJ_H_
 #define _MAPPROJ_H_
 
-#include "electronicmap/common.h"
-#include "electronicmap/config.h"
+#include "electronicmap/coorcommon.h"
+#include "electronicmap/coorconfig.h"
 #include "electronicmap/coordinates.h"
 #include <vector>
 using namespace std;

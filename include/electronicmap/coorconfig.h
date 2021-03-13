@@ -5,7 +5,7 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-#include "electronicmap/common.h"
+#include "electronicmap/coorcommon.h"
 #include <vector>
 using namespace std;
 

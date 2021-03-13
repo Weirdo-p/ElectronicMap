@@ -1,7 +1,11 @@
+/*---------------------------------------------
+   coormain.cpp
+   create on 09 Mar 2021 ZHUOXU WHU
+---------------------------------------------*/
 #include <iostream>
 #include <iomanip>
-#include "electronicmap/common.h"
-#include "electronicmap/config.h"
+#include "electronicmap/coorcommon.h"
+#include "electronicmap/coorconfig.h"
 #include "electronicmap/coordinates.h"
 #include "electronicmap/mapproj.h"
 
