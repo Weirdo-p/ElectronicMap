@@ -22,10 +22,12 @@ int main(int argv, char** argc) {
     CConfigCoors config(path, central);
     config.SetCentral(central);
     CCoors coor(config);
+	// BLH2XYZ
     auto data = coor.BLH2XYZ_Batch();
 	for (auto da : data) cout << fixed << setprecision(4) << da.X_ << "  " << da.Y_ << "  " << da.Z_ << endl;
 	cout << endl;
 	coor.SetPointsXYZ(data);
+	// XYZ2BLH to testify accuracy
 	auto blhs_new = coor.XYZ2BLH_Batch();
 	auto blhs = config.GetPoints();
 	for(int i = 0; i < blhs.size(); ++i) {
@@ -43,6 +45,7 @@ int main(int argv, char** argc) {
 				blh.H_ << endl;
 	}
 	cout << endl;
+
 	// Gaussian Projection test
 	GaussProj proj(config);
 	proj.Proj_Batch();
@@ -59,6 +62,7 @@ int main(int argv, char** argc) {
 	auto back = coor.BLH2XYZ_Batch();
 
 	cout << endl << endl;
+	// testify accuracy
 	for (int i = 0; i < back.size(); ++i) 
 		cout << back[i].X_ - data[i].X_ << "   " <<
 				back[i].Y_ - data[i].Y_ << "   " <<
