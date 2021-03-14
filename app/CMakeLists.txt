@@ -1,5 +1,5 @@
-add_executable(coortest coormain.cpp)
-add_executable(dijkstest dijksmain.cpp)
+add_executable(coor coormain.cpp)
+add_executable(dijks dijksmain.cpp)
 
-target_link_libraries(coortest coors ${THIRD_PARTY_LIBS})
-target_link_libraries(dijkstest ${THIRD_PARTY_LIBS})
+target_link_libraries(coor coors ${THIRD_PARTY_LIBS})
+target_link_libraries(dijks dijkstra ${THIRD_PARTY_LIBS})

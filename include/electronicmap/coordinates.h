@@ -54,6 +54,7 @@ public: // get function
 public: // set function
     void SetEllipsoid(EllipsoidType type);
     void SetPointsBLH(vector<BLH> points_blh);
+    void SetPointsXYZ(vector<XYZ> points_xyz);
 
 private: // helper
     /****************************************************

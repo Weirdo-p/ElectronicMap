@@ -1,9 +1,9 @@
 /*---------------------------------------------
-   config.h
+   coorconfig.h
    create on 09 Mar 2021 ZHUOXU WHU
 ---------------------------------------------*/
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef _COORCONFIG_H_
+#define _COORCONFIG_H_
 
 #include "electronicmap/coorcommon.h"
 #include <vector>

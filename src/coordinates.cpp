@@ -107,6 +107,9 @@ void CCoors::SetPointsBLH(vector<BLH> points_blh) {
     points_blh_ = points_blh;
 }
 
+void CCoors::SetPointsXYZ(vector<XYZ> points_xyz) {
+    points_xyz_ = points_xyz;
+}
 
 vector<BLH> CCoors::GetPointsBLH() {
     return points_blh_;

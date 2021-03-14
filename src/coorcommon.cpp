@@ -1,5 +1,5 @@
 /*---------------------------------------------
-   common.cpp
+   coorcommon.cpp
    create on 09 Mar 2021 ZHUOXU WHU
 ---------------------------------------------*/
 #include "electronicmap/coorcommon.h"
@@ -123,13 +123,14 @@ void Rad2Deg(double rad, double& deg) {
 }
 
 void Rad2DMS(double rad, DMS& dms) {
-    double deg = 0;
+    double sec = 0;
     if (rad < 0) rad += 2 * PI;
 
-    Rad2Deg(rad, deg);
-    dms.Deg_ = int(deg);
-    dms.Min_ = int((deg - dms.Deg_) * 60.0);
-    dms.Sec_ = (deg - dms.Deg_ - dms.Min_ / 60) * 3600.0;
+    Rad2Deg(rad, sec);
+    sec *= 3600.0;
+    dms.Deg_ = int(sec / 3600.0);
+    dms.Min_ = int((sec - dms.Deg_ * 3600.0) / 60.0);
+    dms.Sec_ = (sec - dms.Deg_ * 3600.0 - dms.Min_ * 60.0);
 }
 
 bool CheckL(DMS L) {

@@ -1,9 +1,9 @@
 /*---------------------------------------------
-   common.h
+   coorcommon.h
    create on 09 Mar 2021 ZHUOXU WHU
 ---------------------------------------------*/
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#ifndef _COORCOMMON_H_
+#define _COORCOMMON_H_
 
 #include <iostream>
 #include <math.h>
