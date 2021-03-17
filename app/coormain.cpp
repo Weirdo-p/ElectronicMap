@@ -63,8 +63,12 @@ int main(int argv, char** argc) {
 
 	cout << endl << endl;
 	// testify accuracy
-	for (int i = 0; i < back.size(); ++i) 
-		cout << back[i].X_ - data[i].X_ << "   " <<
-				back[i].Y_ - data[i].Y_ << "   " <<
-				back[i].Z_ - data[i].Z_ << "   " << endl;
+	for(int i = 0; i < blhs.size(); ++i) {
+		double diff_B = pts_blh_back[i].B_Rad_ - blhs[i].B_Rad_;
+		double diff_L = pts_blh_back[i].L_Rad_ - blhs[i].L_Rad_;
+		double diff_H = pts_blh_back[i].H_ - blhs[i].H_;
+		double diff_B_deg, diff_L_deg;
+		Rad2Deg(diff_B, diff_B_deg); Rad2Deg(diff_L, diff_L_deg);
+		cout << fixed << setprecision(4) << diff_B_deg * 3600.0 << "  " << diff_L_deg * 3600.0 << "  " << diff_H << endl; 
+	}
 }
