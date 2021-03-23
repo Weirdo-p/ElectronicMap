@@ -57,11 +57,14 @@ double* GaussProj::GetCoef() {
 double GaussProj::Getx(double B, double t, double eta,
                        double l, double N, double X) {
     double coef[4] = {0}, sinB = sin(B), cosB = cos(B);
+    double l2 = l * l, l4 = l2 * l2, l6 = l4 * l2;
+    double eta2 = eta * eta, eta4 = eta2 * eta2;
+    double t2 = t * t, t4 = t2 * t2;
     coef[0] = X;
-    coef[1] = N / 2.0 * sinB * cosB * pow(l, 2);
-    coef[2] = N / 24.0 * sinB * pow(cosB, 3) * (5 - pow(t, 2) + 9 * pow(eta, 2) +
-              4 * pow(eta, 4)) * pow(l, 4);
-    coef[3] = N / 720.0 * sinB * pow(cosB, 5) * (61 - 58 * pow(t, 2) + pow(t, 4)) * pow(l, 6);
+    coef[1] = N / 2.0 * sinB * cosB * l2;
+    coef[2] = N / 24.0 * sinB * pow(cosB, 3) * (5 - t2 + 9 * eta2 +
+              4 * eta4) * l4;
+    coef[3] = N / 720.0 * sinB * pow(cosB, 5) * (61.0 - 58.0 * t2 + t4) * l6;
     double x = 0;
     for(int i = 0; i < 4; ++i)
         x += coef[i];
@@ -69,10 +72,13 @@ double GaussProj::Getx(double B, double t, double eta,
 }
 double GaussProj::Gety(double B, double t, double eta, double l, double N) {
     double cosB = cos(B), coef[3] = {0};
+    double l2 = l * l, l4 = l2 * l2, l6 = l4 * l2;
+    double eta2 = eta * eta, eta4 = eta2 * eta2;
+    double t2 = t * t, t4 = t2 * t2;
     coef[0] = N * cosB * l;
-    coef[1] = N / 6.0 * pow(cosB, 3) * (1 - pow(t, 2) + pow(eta, 2)) * pow(l, 3);
-    coef[2] = N / 120.0 * pow(cosB, 5) * (5 - 18 * pow(t ,2) + pow(t, 4) + 14 *
-              pow(eta, 2) - 58 * pow(eta, 2) * pow(t, 2)) * pow(l, 5);
+    coef[1] = N / 6.0 * pow(cosB, 3) * (1 - t2 + eta2) * l2 * l;
+    coef[2] = N / 120.0 * pow(cosB, 5) * (5 - 18 * t2 + t4 + 14 *
+              eta2 - 58 * eta2 * t2) * l4 * l;
     double y = 0;
     for (int i = 0; i < 3; ++i)
         y += coef[i];

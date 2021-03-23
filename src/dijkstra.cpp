@@ -1,3 +1,7 @@
+/*---------------------------------------------
+   dijkstra.cpp
+   create on 09 Mar 2021 ZHUOXU WHU
+---------------------------------------------*/
 #include "electronicmap/dijkstra.h"
 
 CDijkstra::CDijkstra() {
